@@ -42,10 +42,11 @@ dependencies: [
 
 ## Usage
 
-### Install to App
+### Install KSCrash
 
 ```swift
-import CrashMonitor
+import CrashMonitorCore
+import CrashMonitorInstall
  
  do {
     try CrashMonitor.install()
@@ -54,15 +55,18 @@ import CrashMonitor
  }
 ```
 
-### Get All Reports
+### Get All Crash Reports
 
 ```swift
-import CrashMonitor
+import CrashMonitorCore
+import CrashMonitorReport
  
- do {
-    let reports = try await CrashMonitor.allAppleFmtReports()
- } catch {
-    print("CrashMonitor get all reports failed: \(error)")
+ Task {  
+    do {
+        let reports = try await CrashMonitor.allReports()
+    } catch {
+        print("CrashMonitor get all reports failed: \(error)")
+    }
  }
 ```
 

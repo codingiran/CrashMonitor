@@ -2,18 +2,35 @@
 //  KSCrash+.h
 //  CrashMonitor
 //
-//  Created by iran.qiu on 2024/11/21.
+//  Created by CodingIran on 2024/11/21.
 //
 
 #import <Foundation/Foundation.h>
 #import "KSCrashReport.h"
 #import "KSCrashReportStore.h"
+#import "KSCrashReportFilterAppleFmt.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KSCrashReportStore (CrashMonitor)
 
 - (NSArray<KSCrashReportDictionary *> *)allReports;
+
+@end
+
+@interface KSCrashReportFilterAppleFmt (CrashMonitor)
+
+- (NSDictionary *)recrashReport:(NSDictionary *)report;
+
+- (NSDictionary *)systemReport:(NSDictionary *)report;
+
+- (NSDictionary *)infoReport:(NSDictionary *)report;
+
+- (NSDictionary *)processReport:(NSDictionary *)report;
+
+- (NSDictionary *)crashReport:(NSDictionary *)report;
+
+- (NSArray *)binaryImagesReport:(NSDictionary *)report;
 
 @end
 

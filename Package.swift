@@ -13,31 +13,56 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "CrashMonitor",
-            targets: ["CrashMonitor"]
+            name: "CrashMonitorCore",
+            targets: ["CrashMonitorCore"]
+        ),
+        .library(
+            name: "CrashMonitorInstall",
+            targets: ["CrashMonitorInstall"]
+        ),
+        .library(
+            name: "CrashMonitorReports",
+            targets: ["CrashMonitorReports"]
         ),
     ],
     dependencies: [
         .package(url: "https://github.com/kstenerud/KSCrash.git", .upToNextMajor(from: "2.0.0-rc.8")),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "CrashMonitor",
+            name: "CrashMonitorCore",
             dependencies: [
-                "CrashMonitorObjC",
-                .product(name: "Filters", package: "KSCrash"),
+                .product(name: "Recording", package: "KSCrash"),
+            ],
+            path: "Sources/CrashMonitorCore",
+            resources: [.copy("Resources/PrivacyInfo.xcprivacy")]
+        ),
+        .target(
+            name: "CrashMonitorInstall",
+            dependencies: [
+                "CrashMonitorCore",
                 .product(name: "Recording", package: "KSCrash"),
                 .product(name: "Installations", package: "KSCrash"),
             ],
-            path: "Sources/CrashMonitor",
+            path: "Sources/CrashMonitorInstall",
+            resources: [.copy("Resources/PrivacyInfo.xcprivacy")]
+        ),
+        .target(
+            name: "CrashMonitorReports",
+            dependencies: [
+                "CrashMonitorCore",
+                "CrashMonitorObjC",
+                .product(name: "Recording", package: "KSCrash"),
+                .product(name: "Filters", package: "KSCrash"),
+            ],
+            path: "Sources/CrashMonitorReports",
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "CrashMonitorObjC",
             dependencies: [
                 .product(name: "Recording", package: "KSCrash"),
+                .product(name: "Filters", package: "KSCrash"),
             ],
             path: "Sources/CrashMonitorObjC",
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
@@ -45,7 +70,11 @@ let package = Package(
         ),
         .testTarget(
             name: "CrashMonitorTests",
-            dependencies: ["CrashMonitor"]
+            dependencies: [
+                "CrashMonitorCore",
+                "CrashMonitorInstall",
+                "CrashMonitorReports",
+            ]
         ),
     ]
 )
