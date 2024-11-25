@@ -16,13 +16,13 @@ public extension CrashMonitor {
     /// - Parameters:
     ///   - appName: name of the app, If `nil` the default value is used: `CFBundleName` from Info.plist. defaults to nil
     ///   - installPath: install path, If `nil` the default directory is used: The default directory is "KSCrash" inside the default cache directory. defaults to nil
-    ///   - monitorTypes: monitor types, defaults to .machException, .signal, .cppException, .nsException
+    ///   - monitorTypes: monitor types, defaults to [.machException, .signal, .cppException, .nsException, .system, .applicationState, .memoryTermination]
     ///   - reportsPath: path of reports, If `nil` the default directory is used: `Reports` within the installation directory. defaults to nil
     ///   - maxReportCount: The maximum number of crash reports allowed on disk before old ones get deleted. defaults to 20
     ///   - cleanupPolicy: What to do after sending reports. defaults to .never
     static func install(to appName: String? = nil,
                         installPath: String? = nil,
-                        monitorTypes: CrashMonitorType = [.machException, .signal, .cppException, .nsException],
+                        monitorTypes: CrashMonitorType = [.machException, .signal, .cppException, .nsException, .system, .applicationState, .memoryTermination],
                         reportsPath: String? = nil,
                         maxReportCount: Int = 20,
                         cleanupPolicy: ReportCleanupPolicy = .never) throws

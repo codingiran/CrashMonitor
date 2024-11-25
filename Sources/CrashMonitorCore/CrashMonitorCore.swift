@@ -13,8 +13,8 @@ import KSCrashRecording
 #error("CrashMonitor doesn't support Swift versions below 5.9.")
 #endif
 
-/// Current CrashMonitor version 0.0.3. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
-let version = "0.0.3"
+/// Current CrashMonitor version 0.0.4. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
+let version = "0.0.4"
 
 public enum CrashMonitor {}
 
@@ -116,6 +116,9 @@ public extension CrashMonitor {
 
         /** Enable experimental monitoring options. */
         public static let experimental: CrashMonitorType = [.mainThreadDeadlock]
+
+        /** Required monitor options for essential operation. */
+        public static let required: CrashMonitorType = [.system, .applicationState, .memoryTermination]
     }
 }
 
