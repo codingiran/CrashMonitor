@@ -13,8 +13,8 @@ import KSCrashRecording
 #error("CrashMonitor doesn't support Swift versions below 5.9.")
 #endif
 
-/// Current CrashMonitor version 0.0.1. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
-let version = "0.0.1"
+/// Current CrashMonitor version 0.0.2. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
+let version = "0.0.2"
 
 public enum CrashMonitor {}
 
@@ -47,13 +47,13 @@ public extension CrashMonitor {
     /// Report store configuration
     struct ReportStoreConfiguration {
         /// Reports path
-        let reportsPath: String?
+        public let reportsPath: String?
         /// App name
-        let appName: String?
+        public let appName: String?
         /// Max report count
-        let maxReportCount: Int
+        public let maxReportCount: Int
         /// Cleanup policy
-        let cleanupPolicy: ReportCleanupPolicy
+        public let cleanupPolicy: ReportCleanupPolicy
 
         public init(reportsPath: String? = nil,
                     appName: String? = nil,

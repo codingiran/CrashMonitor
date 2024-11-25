@@ -15,18 +15,46 @@ import KSCrashRecording
 public extension CrashMonitor {
     struct CrashReports: Equatable {
         /// Crash report id (KSCrash id)
-        let id: Int64
-        /// Report id
-        let reportID: String?
+        public let id: Int64
+        /// Report name
+        public let name: String
         /// Crash date
-        let crashDate: Date?
+        public let crashDate: Date?
         /// Raw value
-        let rawValue: [String: Any]
+        public let rawValue: [String: Any]
+        /// Report Info
+        public let info: CrashReports.Info?
         /// Apple fmt value
-        let appleFmtValue: String?
+        public let appleFmtValue: String?
 
         public static func == (lhs: CrashMonitor.CrashReports, rhs: CrashMonitor.CrashReports) -> Bool {
             return lhs.id == rhs.id
+        }
+
+        public struct Info {
+            public let id: String?
+            public let version: String?
+            public let type: String?
+            public let timestamp: String?
+            public let processName: String?
+
+            init(id: String?, version: String?, type: String?, timestamp: String?, processName: String?) {
+                self.id = id
+                self.version = version
+                self.type = type
+                self.timestamp = timestamp
+                self.processName = processName
+            }
+
+            init?(dict: [String: Any]?) {
+                guard let dict else { return nil }
+                let id = dict[CrashField.id.rawValue] as? String
+                let version = dict[CrashField.version.rawValue] as? String
+                let type = dict[CrashField.type.rawValue] as? String
+                let timestamp = dict[CrashField.timestamp.rawValue] as? String
+                let processName = dict[CrashField.processName.rawValue] as? String
+                self.init(id: id, version: version, type: type, timestamp: timestamp, processName: processName)
+            }
         }
     }
 }
@@ -56,20 +84,25 @@ public extension CrashMonitor {
             guard let report = crashReportStore.report(for: id) else {
                 continue
             }
+            let name = reportName(of: id, appName: reportStoreConfiguration.appName ?? "")
             let rawValue = report.value
-            var reportID: String?
+            let infoDict = appleFmtFilter.infoReport(rawValue) as? [String: Any]
+            let info = CrashReports.Info(dict: infoDict)
             var crashDate: Date?
-            if let reportDict = appleFmtFilter.infoReport(rawValue) as? [String: Any] {
-                reportID = reportDict[CrashField.id.rawValue] as? String
-                if let timestamp = reportDict[CrashField.timestamp.rawValue] as? String {
-                    crashDate = g_rfc3339DateFormatter.date(from: timestamp)
-                }
+            if let timestamp = info?.timestamp {
+                crashDate = g_rfc3339DateFormatter.date(from: timestamp)
             }
             let appleFmtReport = try await appleFmtFilter.filterReport(report)
             let appleFmtValue = appleFmtReport?.value
-            reports.append(CrashMonitor.CrashReports(id: id, reportID: reportID, crashDate: crashDate, rawValue: rawValue, appleFmtValue: appleFmtValue))
+            let crashReport = CrashMonitor.CrashReports(id: id, name: name, crashDate: crashDate, rawValue: rawValue, info: info, appleFmtValue: appleFmtValue)
+            reports.append(crashReport)
         }
         return reports
+    }
+
+    /// Get Report name by id
+    private static func reportName(of id: Int64, appName: String) -> String {
+        String(format: "%@-report-%016llx", appName, id)
     }
 }
 

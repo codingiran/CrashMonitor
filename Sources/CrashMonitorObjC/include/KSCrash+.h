@@ -12,13 +12,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface KSCrashReportStore (CrashMonitor)
+@interface KSCrashReportStore (CrashMonitorPublicAPI)
 
 - (NSArray<KSCrashReportDictionary *> *)allReports;
 
 @end
 
-@interface KSCrashReportFilterAppleFmt (CrashMonitor)
+@interface KSCrashReportFilterAppleFmt (CrashMonitorPublicAPI)
 
 - (NSDictionary *)recrashReport:(NSDictionary *)report;
 
