@@ -13,8 +13,8 @@ import KSCrashRecording
 #error("CrashMonitor doesn't support Swift versions below 5.9.")
 #endif
 
-/// Current CrashMonitor version 0.0.2. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
-let version = "0.0.2"
+/// Current CrashMonitor version 0.0.3. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
+let version = "0.0.3"
 
 public enum CrashMonitor {}
 

@@ -109,6 +109,45 @@ public extension CrashMonitor {
 // MARK: - Delete Crash Reports
 
 public extension CrashMonitor {
+    /// Delete crash report
+    /// - Parameters:
+    ///   - id: report id
+    ///   - appName: name of the app, If `nil` the default value is used: `CFBundleName` from Info.plist. defaults to nil
+    ///   - reportsPath: path of reports, If `nil` the default directory is used: `Reports` within the installation directory. defaults to nil
+    static func deleteReport(id: Int64, appName: String? = nil, reportsPath: String? = nil) throws {
+        let reportStoreConfiguration = CrashMonitor.ReportStoreConfiguration(reportsPath: reportsPath, appName: appName)
+        try deleteReport(id: id, reportStoreConfiguration: reportStoreConfiguration)
+    }
+
+    /// Delete crash report
+    /// - Parameters:
+    ///   - report: report
+    ///   - appName: name of the app, If `nil` the default value is used: `CFBundleName` from Info.plist. defaults to nil
+    ///   - reportsPath: path of reports, If `nil` the default directory is used: `Reports` within the installation directory. defaults to nil
+    static func deleteReport(_ report: CrashMonitor.CrashReports, appName: String? = nil, reportsPath: String? = nil) throws {
+        try deleteReport(id: report.id, appName: appName, reportsPath: reportsPath)
+    }
+
+    /// Delete crash report
+    /// - Parameters:
+    ///   - id: report id
+    ///   - appName: name of the app, If `nil` the default value is used: `CFBundleName` from Info.plist. defaults to nil
+    ///   - reportsPath: path of reports, If `nil` the default directory is used: `Reports` within the installation directory. defaults to nil
+    static func deleteReport(id: Int64, reportStoreConfiguration: CrashMonitor.ReportStoreConfiguration) throws {
+        let configuration = KSCrashRecording.CrashReportStoreConfiguration(reportStoreConfiguration)
+        let crashReportStore = try KSCrashRecording.CrashReportStore(configuration: configuration)
+        crashReportStore.deleteReport(with: id)
+    }
+
+    /// Delete crash report
+    /// - Parameters:
+    ///   - report: report
+    ///   - appName: name of the app, If `nil` the default value is used: `CFBundleName` from Info.plist. defaults to nil
+    ///   - reportsPath: path of reports, If `nil` the default directory is used: `Reports` within the installation directory. defaults to nil
+    static func deleteReport(_ report: CrashMonitor.CrashReports, reportStoreConfiguration: CrashMonitor.ReportStoreConfiguration) throws {
+        try deleteReport(id: report.id, reportStoreConfiguration: reportStoreConfiguration)
+    }
+
     /// Delete all crash reports
     /// - Parameters:
     ///   - appName: name of the app, If `nil` the default value is used: `CFBundleName` from Info.plist. defaults to nil
