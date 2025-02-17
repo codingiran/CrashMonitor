@@ -13,14 +13,14 @@ import KSCrashRecording
 #error("CrashMonitor doesn't support Swift versions below 5.9.")
 #endif
 
-/// Current CrashMonitor version 0.0.4. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
-let version = "0.0.4"
+/// Current CrashMonitor version 0.0.5. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
+let version = "0.0.5"
 
-public enum CrashMonitor {}
+public enum CrashMonitor: Sendable {}
 
 public extension CrashMonitor {
     /// Install configuration
-    struct Installonfiguration {
+    struct Installonfiguration: @unchecked Sendable {
         /// Install path
         public let installPath: String?
         /// Monitor types
@@ -45,7 +45,7 @@ public extension CrashMonitor {
 
 public extension CrashMonitor {
     /// Report store configuration
-    struct ReportStoreConfiguration {
+    struct ReportStoreConfiguration: Sendable {
         /// Reports path
         public let reportsPath: String?
         /// App name
@@ -72,7 +72,7 @@ public extension CrashMonitor {
 
 public extension CrashMonitor {
     /// Monitor types, align with KSCrashRecording.MonitorType
-    struct CrashMonitorType: OptionSet {
+    struct CrashMonitorType: OptionSet, Sendable {
         public let rawValue: UInt
         public init(rawValue: UInt) {
             self.rawValue = rawValue
@@ -124,7 +124,7 @@ public extension CrashMonitor {
 
 public extension CrashMonitor {
     /// Report cleanup policy, align with KSCrashRecording.CrashReportCleanupPolicy
-    enum ReportCleanupPolicy {
+    enum ReportCleanupPolicy: Sendable {
         /// Never delete reports
         case never
         /// Delete reports on success

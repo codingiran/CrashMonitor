@@ -13,7 +13,7 @@ import KSCrashRecording
 // MARK: - Crash Reports Model
 
 public extension CrashMonitor {
-    struct CrashReports: Equatable {
+    struct CrashReports: Equatable, @unchecked Sendable {
         /// Crash report id (KSCrash id)
         public let id: Int64
         /// Report name
@@ -31,7 +31,7 @@ public extension CrashMonitor {
             return lhs.id == rhs.id
         }
 
-        public struct Info {
+        public struct Info: Sendable {
             public let id: String?
             public let version: String?
             public let type: String?
